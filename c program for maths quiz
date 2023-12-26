@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int level = 1, choice, correct = 0, total = 0;
+    srand(time(NULL)); // Seed random number generator
+
+    while (1) {
+        printf("\n** Level %d **\n", level);
+        printf("1. Addition\n");
+        printf("2. Subtraction\n");
+        printf("3. Multiplication\n");
+        printf("4. Division\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 5) {
+            break; // Exit the game
+        }
+
+        int num1, num2, answer, user_answer;
+
+        switch (choice) {
+            case 1:
+                // Generate addition questions based on level
+                num1 = rand() % (level * 10) + 1;
+                num2 = rand() % (level * 10) + 1;
+                answer = num1 + num2;
+                printf("%d + %d = ", num1, num2);
+                break;
+            case 2:
+                // Generate subtraction questions with positive results
+                do {
+                    num1 = rand() % (level * 10) + 1;
+                    num2 = rand() % (level * 10) + 1;
+                } while (num1 < num2);
+                answer = num1 - num2;
+                printf("%d - %d = ", num1, num2);
+                break;
+            case 3:
+                // Generate multiplication questions based on level
+                num1 = rand() % (level * 10) + 1;
+                num2 = rand() % (level * 10) + 1;
+                answer = num1 * num2;
+                printf("%d * %d = ", num1, num2);
+                break;
+            case 4:
+                // Generate division questions with whole number results
+                do {
+                    num1 = rand() % (level * 10) + 1;
+                    num2 = rand() % (level * 10) + 1;
+                } while (num1 % num2 != 0);
+                answer = num1 / num2;
+                printf("%d / %d = ", num1, num2);
+                break;
+            default:
+                printf("Invalid choice!\n");
+                continue;
+        }
+
+        scanf("%d", &user_answer);
+
+        if (user_answer == answer) {
+            printf("Correct!\n");
+            correct++;
+        } else {
+            printf("Incorrect. The answer is %d\n", answer);
+        }
+
+        total++;
+
+        // Move to the next level if 80% or more questions are answered correctly
+        if (correct * 10 >= total * 8) {
+            level++;
+            correct = 0;
+            total = 0;
+        }
+    }
+
+    printf("\nThanks for playing!\n");
+    return 0;
+}
